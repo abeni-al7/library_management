@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/abeni-al7/library_management/controllers"
 )
 
@@ -14,7 +15,8 @@ func Choices() {
 	fmt.Println("5. List all available books")
 	fmt.Println("6. List books borrowed by a member")
 	fmt.Println("7. Register new member")
-	fmt.Println("8. Quit")
+	fmt.Println("8. List all members")
+	fmt.Println("9. Quit")
 }
 
 func main() {
@@ -59,7 +61,7 @@ func main() {
 		case choice == 8:
 			println()
 			controllers.ListMembers()
-		case choice == 8:
+		case choice == 9:
 			fmt.Println("Goodbye!")
 			choice = -1
 		}
