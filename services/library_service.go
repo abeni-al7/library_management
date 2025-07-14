@@ -1,10 +1,3 @@
-// Define a LibraryManager interface with the following methods:
-// AddBook(book Book)
-// RemoveBook(bookID int)
-// BorrowBook(bookID int, memberID int) error
-// ReturnBook(bookID int, memberID int) error
-// ListAvailableBooks() []Book
-// ListBorrowedBooks(memberID int) []Book
 package services
 
 import (
@@ -46,15 +39,11 @@ func (library *Library) BorrowBook(bookId int, memberID int) error {
 		return fmt.Errorf("member with id %v does not exist", memberID)
 	}
 
-	for _, value := range library.members {
-		taken := value.BorrowedBooks
-		for _, value := range taken {
-			if book.ID == value.ID {
-				return fmt.Errorf("this book is already borrowed out")
-			}
-		}
+	if book.Status == "Borrowed" {
+		return fmt.Errorf("this book is already borrowed out")
 	}
 
+	book.Status = "Borrowed"
 	member := library.members[memberID]
 	member.BorrowedBooks = append(member.BorrowedBooks, book)
 	library.members[memberID] = member
@@ -64,7 +53,9 @@ func (library *Library) BorrowBook(bookId int, memberID int) error {
 func (library *Library) ListAvailableBooks() []models.Book {
 	var books []models.Book
 	for _, value := range library.books {
-		books = append(books, value)
+		if value.Status == "Available" {
+			books = append(books, value)
+		}
 	}
 	return books
 }
