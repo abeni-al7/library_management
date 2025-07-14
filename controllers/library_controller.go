@@ -11,7 +11,10 @@ import (
 )
 
 var (
-	library services.Library
+	library services.Library = services.Library{
+		Books: make(map[int]models.Book),
+		Members: make(map[int]models.Member),
+	}
 )
 
 func AddNewBook() {
@@ -48,6 +51,34 @@ func RemoveExistingBook() {
 
 	fmt.Scanln(&id)
 	library.RemoveBook(id)
+}
+
+func RegisterMember() {
+	var name string
+
+	id := len(library.Members)
+	borrwedBooks := make([]models.Book, 0)
+
+	fmt.Println()
+	fmt.Println("-----------------")
+	fmt.Println("Fill the necessary information for the member: ")
+
+	fmt.Println("What is the name of the member?")
+	reader := bufio.NewReader(os.Stdin)
+	name, _ = reader.ReadString('\n')
+	name = strings.TrimSpace(name)
+
+	member := models.Member{ID: id, Name: name, BorrowedBooks: borrwedBooks}
+	library.RegisterMember(member)
+}
+
+func ListMembers() {
+	members := library.ListMembers()
+	fmt.Println("Here are the members of the Library: ")
+	for _, value := range members {
+		fmt.Printf("%v - %v", value.ID, value.Name)
+		fmt.Println()
+	}
 }
 
 func BorrowBook() {

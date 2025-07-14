@@ -9,6 +9,7 @@ import (
 type LibraryManager interface {
 	AddBook(book models.Book)
 	RemoveBook(bookID int)
+	RegisterMember(member models.Member)
 	BorrowBook(bookID int, memberID int) error
 	ReturnBook(bookID int, memberID int) error
 	ListAvailableBooks() []models.Book
@@ -27,6 +28,16 @@ func (library *Library) AddBook(book models.Book) {
 
 func (library *Library) RemoveBook(bookID int) {
 	delete(library.Books, bookID)
+}
+
+func (library *Library) RegisterMember(member models.Member) error {
+	_, exists := library.Members[member.ID]
+	if exists {
+		return fmt.Errorf("member with id %v already exists", member.ID)
+	}
+
+	library.Members[member.ID] = member
+	return nil
 }
 
 func (library *Library) BorrowBook(bookID int, memberID int) error {
@@ -92,4 +103,12 @@ func (library *Library) ListBorrowedBooks(memberID int) []models.Book {
 	}
 
 	return library.Members[memberID].BorrowedBooks
+}
+
+func (library *Library) ListMembers() []models.Member {
+	var members []models.Member
+	for _, value := range library.Members {
+		members = append(members, value)
+	}
+	return members
 }
