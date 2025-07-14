@@ -58,6 +58,7 @@ func (library *Library) BorrowBook(bookID int, memberID int) error {
 	member := library.Members[memberID]
 	member.BorrowedBooks = append(member.BorrowedBooks, book)
 	library.Members[memberID] = member
+	library.Books[bookID] = book
 	return nil
 }
 
@@ -83,6 +84,7 @@ func (library *Library) ReturnBook(bookID int, memberID int) error {
 		}
 	}
 	library.Members[memberID] = member
+	library.Books[bookID] = book
 	return nil
 }
 

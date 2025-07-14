@@ -61,6 +61,7 @@ func main() {
 		case choice == 8:
 			println()
 			controllers.ListMembers()
+			println()
 		case choice == 9:
 			fmt.Println("Goodbye!")
 			choice = -1
